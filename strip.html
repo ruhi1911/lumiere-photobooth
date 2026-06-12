@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lumière — Your Photostrip 🎞️</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Film Grain Overlay -->
+  <div class="film-grain" aria-hidden="true"></div>
+
+  <!-- Floating Bokeh Light Blobs -->
+  <div class="bokeh-container" aria-hidden="true">
+    <div class="bokeh-blob"></div>
+    <div class="bokeh-blob"></div>
+    <div class="bokeh-blob"></div>
+    <div class="bokeh-blob"></div>
+    <div class="bokeh-blob"></div>
+  </div>
+
+  <!-- Curtain Transition Wings -->
+  <div class="curtain-container" aria-hidden="true">
+    <div class="curtain-wing left"></div>
+    <div class="curtain-wing right"></div>
+  </div>
+
+  <div class="site-content">
+    
+    <header>
+      <h1>YOUR PHOTOSTRIP</h1>
+      <span class="subtitle">a keepsake for your heart 🌸</span>
+    </header>
+
+    <!-- Fallback Empty State (hidden by default) -->
+    <div id="noPhotosFallback" style="display: none; text-align: center; margin-top: 50px;">
+      <h2>No photos captured yet! 😭</h2>
+      <p style="margin: 20px 0; color: var(--muted-text);">Go back to the booth to take some lovely shots.</p>
+      <a href="booth.html" class="btn-retro">← Return to Booth</a>
+    </div>
+
+    <!-- 2-Column Builder Layout -->
+    <main class="builder-layout" id="builderMainContent">
+      
+      <!-- ─── LEFT COLUMN: CUSTOMIZATION CONTROLS ─── -->
+      <aside class="sidebar-panel">
+        <h2>customize strip</h2>
+
+        <!-- Cute Note -->
+        <div class="control-group">
+          <label class="control-label" for="noteInput">Cute Note</label>
+          <textarea id="noteInput" class="note-textarea" placeholder="write something cute here ♡" maxlength="80"></textarea>
+        </div>
+
+        <!-- Strip Layout Selector -->
+        <div class="control-group">
+          <span class="control-label">Strip Layout</span>
+          <div class="layout-picker" id="layoutPicker">
+            <button class="btn-retro btn-outlined active" data-layout="vertical">Vertical Strip</button>
+            <button class="btn-retro btn-outlined" data-layout="grid">2×2 Grid</button>
+          </div>
+        </div>
+
+        <!-- Strip Border Colors -->
+        <div class="control-group">
+          <span class="control-label">Border/Sprocket Color</span>
+          <div class="color-picker-row" style="margin-bottom: 12px;">
+            <div class="color-input-wrapper">
+              <input type="color" id="borderColorInput" value="#E8C4C4">
+            </div>
+            <span class="color-label-text">Select Color</span>
+          </div>
+
+          <span class="control-label">Accent/Text Color</span>
+          <div class="color-picker-row">
+            <div class="color-input-wrapper">
+              <input type="color" id="accentColorInput" value="#E8C4C4">
+            </div>
+            <span class="color-label-text">Select Color</span>
+          </div>
+        </div>
+
+        <!-- Cute Stickers -->
+        <div class="control-group">
+          <span class="control-label">Add Stickers 🎀</span>
+          <div class="sticker-palette" id="stickerPalette">
+            <button class="sticker-btn" data-emoji="⭐">⭐</button>
+            <button class="sticker-btn" data-emoji="💗">💗</button>
+            <button class="sticker-btn" data-emoji="🌸">🌸</button>
+            <button class="sticker-btn" data-emoji="🦋">🦋</button>
+            <button class="sticker-btn" data-emoji="✨">✨</button>
+            <button class="sticker-btn" data-emoji="🌙">🌙</button>
+            <button class="sticker-btn" data-emoji="🎀">🎀</button>
+            <button class="sticker-btn" data-emoji="🍒">🍒</button>
+          </div>
+          <button id="clearStickersBtn" class="clear-stickers-btn">Clear Stickers</button>
+        </div>
+
+        <!-- Print & Download -->
+        <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 12px;">
+          <button id="printDownloadBtn" class="btn-retro" style="width: 100%;">
+            🖨️ Print & Download
+          </button>
+          <button id="continueBtn" class="btn-retro btn-outlined" style="width: 100%;">
+            Continue →
+          </button>
+        </div>
+
+      </aside>
+
+      <!-- ─── RIGHT COLUMN: STRIP PREVIEW ─── -->
+      <section class="preview-strip-section">
+        
+        <!-- Printable paper box container wrapper -->
+        <div class="strip-canvas-container" id="stripCanvasContainer">
+          <!-- The actual printable canvas (Vertical / Grid rendering) -->
+          <canvas id="stripCanvas"></canvas>
+        </div>
+
+      </section>
+
+    </main>
+
+    <footer class="site-footer">
+      hand-crafted with 🎀 for sweet memories. &copy; 2026
+    </footer>
+  </div>
+
+  <!-- ─── THANK YOU OVERLAY ─── -->
+  <div class="thankyou-overlay" id="thankyouOverlay">
+    <div class="thankyou-card">
+      
+      <!-- Cute character made of HTML divs and CSS -->
+      <div class="avatar-visual">
+        <div class="avatar-bow"></div>
+        <div class="avatar-head">
+          <div class="avatar-hair"></div>
+          <div class="avatar-hair-bangs"></div>
+          <div class="avatar-eye left"></div>
+          <div class="avatar-eye right"></div>
+          <div class="avatar-blush left"></div>
+          <div class="avatar-blush right"></div>
+          <div class="avatar-mouth"></div>
+        </div>
+      </div>
+
+      <!-- Typewriter display block -->
+      <div class="typewriter-text" id="typewriterText"></div>
+
+      <!-- Actions -->
+      <div class="thankyou-buttons">
+        <button id="visitAgainBtn" class="btn-retro">Visit Again 🎀</button>
+        <button id="closeOverlayBtn" class="btn-retro btn-outlined">✕ close</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Dependencies -->
+  <script src="js/audio.js"></script>
+  <script src="js/frames.js"></script>
+  <script src="js/strip.js"></script>
+</body>
+</html>

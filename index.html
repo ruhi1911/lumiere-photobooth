@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lumière — Step Inside the Vintage Photobooth 🎞️</title>
+  <meta name="description" content="Step inside Lumière, a cinematic digital vintage photobooth. Capture retro photos with gorgeous filters, customized frames, stickers, and export custom photostrips.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Film Grain Overlay -->
+  <div class="film-grain" aria-hidden="true"></div>
+
+  <!-- Floating Bokeh Light Blobs -->
+  <div class="bokeh-container" aria-hidden="true">
+    <div class="bokeh-blob"></div>
+    <div class="bokeh-blob"></div>
+    <div class="bokeh-blob"></div>
+    <div class="bokeh-blob"></div>
+    <div class="bokeh-blob"></div>
+  </div>
+
+  <!-- Curtain Transition Wings -->
+  <div class="curtain-container" aria-hidden="true">
+    <div class="curtain-wing left"></div>
+    <div class="curtain-wing right"></div>
+  </div>
+
+  <!-- Main Landing Container -->
+  <div class="site-content">
+    <main class="landing-main">
+      
+      <!-- CSS Illustrated Photobooth Facade -->
+      <div class="booth-container-visual" aria-label="Vintage photobooth illustration">
+        <div class="booth-roof">
+          <span class="booth-sign">LUMIÈRE</span>
+          <!-- Blink sequence bulbs -->
+          <div class="booth-bulbs">
+            <div class="booth-bulb"></div>
+            <div class="booth-bulb"></div>
+            <div class="booth-bulb"></div>
+          </div>
+        </div>
+        
+        <div class="booth-window">
+          <!-- Curtain flaps that part on hover -->
+          <div class="booth-curtain left"></div>
+          <div class="booth-curtain right"></div>
+          <!-- Dark camera lens inside -->
+          <div class="booth-lens"></div>
+        </div>
+        
+        <div class="booth-bottom">
+          <!-- Insert token coin slot visual -->
+          <div class="coin-slot-visual">
+            <div class="coin-hole"></div>
+            <span class="coin-label">Insert Token</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Typography Header -->
+      <header class="landing-header">
+        <h1>Step Inside <span><italic class="italic-text">the booth</italic></span></h1>
+        <p class="subtitle">Vintage filters · Cute frames · Real moments printed just for you 🎞️</p>
+      </header>
+
+      <!-- Glowing CTA Button -->
+      <button id="insertTokenBtn" class="btn-retro token-btn" aria-label="Insert token to start the photobooth">
+        🪙 Insert Token
+      </button>
+      <p class="hint-text">tap the button to begin your session</p>
+
+    </main>
+
+    <footer class="site-footer">
+      hand-crafted with 🎀 for sweet memories. &copy; 2026
+    </footer>
+  </div>
+
+  <!-- Web Audio API Script & Navigation -->
+  <script src="js/audio.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Curtain opens on load
+      const body = document.body;
+      body.classList.add('transitioning');
+      
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          body.classList.remove('transitioning');
+        }, 50);
+      });
+
+      const tokenBtn = document.getElementById('insertTokenBtn');
+      tokenBtn.addEventListener('click', () => {
+        // Play coin sound
+        if (window.audio) {
+          window.audio.playCoinSound();
+        }
+
+        // Trigger curtain-close animation
+        body.classList.add('transitioning');
+
+        // Navigate to booth.html after 800ms
+        setTimeout(() => {
+          window.location.href = 'booth.html';
+        }, 800);
+      });
+    });
+  </script>
+</body>
+</html>

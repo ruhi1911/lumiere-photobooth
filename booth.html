@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lumière — The Booth 📸</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Optional Face-API.js CDN link -->
+  <script src="https://cdn.jsdelivr.net/npm/face-api.js" defer></script>
+</head>
+<body>
+
+  <!-- Film Grain Overlay -->
+  <div class="film-grain" aria-hidden="true"></div>
+
+  <!-- Floating Bokeh Light Blobs -->
+  <div class="bokeh-container" aria-hidden="true">
+    <div class="bokeh-blob"></div>
+    <div class="bokeh-blob"></div>
+    <div class="bokeh-blob"></div>
+    <div class="bokeh-blob"></div>
+    <div class="bokeh-blob"></div>
+  </div>
+
+  <!-- Curtain Transition Wings -->
+  <div class="curtain-container" aria-hidden="true">
+    <div class="curtain-wing left"></div>
+    <div class="curtain-wing right"></div>
+  </div>
+
+  <div class="site-content">
+    
+    <header>
+      <h1>LUMIÈRE <italic class="italic-text">booth</italic></h1>
+      <p class="subtitle">strike a pose, darling 📸</p>
+    </header>
+
+    <!-- 3-Column Layout -->
+    <main class="booth-layout">
+      
+      <!-- ─── LEFT SIDEBAR: CONTROLS ─── -->
+      <aside class="sidebar-panel">
+        <h2>booth controls</h2>
+
+        <!-- Filter Picker Grid -->
+        <div class="control-group">
+          <span class="control-label">Vintage Filter</span>
+          <div class="filter-grid" id="filterPickerGrid">
+            <button class="btn-retro btn-outlined filter-btn active" data-filter="original">Original</button>
+            <button class="btn-retro btn-outlined filter-btn" data-filter="kodak">Kodak</button>
+            <button class="btn-retro btn-outlined filter-btn" data-filter="noir">Film Noir</button>
+            <button class="btn-retro btn-outlined filter-btn" data-filter="golden">Golden Hour</button>
+            <button class="btn-retro btn-outlined filter-btn" data-filter="lomo">Lomo</button>
+            <button class="btn-retro btn-outlined filter-btn" data-filter="polaroid">Polaroid</button>
+          </div>
+        </div>
+
+        <!-- Frame Picker Grid -->
+        <div class="control-group">
+          <span class="control-label">Frame Style</span>
+          <div class="frame-grid" id="framePickerGrid">
+            <button class="btn-retro btn-outlined frame-btn active" data-frame="classic-white">Classic White</button>
+            <button class="btn-retro btn-outlined frame-btn" data-frame="film-strip">Film Strip</button>
+            <button class="btn-retro btn-outlined frame-btn" data-frame="floral-pastel">Floral Pastel</button>
+            <button class="btn-retro btn-outlined frame-btn" data-frame="polaroid">Polaroid</button>
+            <button class="btn-retro btn-outlined frame-btn" data-frame="neon-arcade">Neon Arcade</button>
+            <button class="btn-retro btn-outlined frame-btn" data-frame="washi-tape">Washi Tape</button>
+          </div>
+
+          <!-- Accent Color Picker -->
+          <div class="color-picker-row">
+            <div class="color-input-wrapper">
+              <input type="color" id="frameColorInput" value="#E8C4C4">
+            </div>
+            <span class="color-label-text">Frame Color</span>
+          </div>
+        </div>
+
+        <!-- Photo Session Config -->
+        <div class="control-group">
+          <span class="control-label">Photo Count</span>
+          <div class="shot-count-row">
+            <label class="shot-count-option">
+              <input type="radio" name="photoCount" value="3">
+              <span>3 Shots</span>
+            </label>
+            <label class="shot-count-option">
+              <input type="radio" name="photoCount" value="4" checked>
+              <span>4 Shots</span>
+            </label>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- ─── CENTER: CAMERA VIEWPORT ─── -->
+      <section class="camera-section">
+        
+        <!-- Frame wrapper around the video -->
+        <div class="booth-decor-top">
+          <span class="booth-decor-logo">✦ LUMIÈRE ✦</span>
+          <div class="booth-decor-bulbs">
+            <div class="booth-decor-bulb"></div>
+            <div class="booth-decor-bulb"></div>
+            <div class="booth-decor-bulb"></div>
+          </div>
+        </div>
+
+        <div class="camera-container-wrapper frame-classic-white" id="cameraViewportContainer" style="--frame-color: #E8C4C4;">
+          
+          <!-- Live video feed -->
+          <video id="cameraVideo" autoplay playsinline muted></video>
+          
+          <!-- Hidden canvas for capturing full resolution image -->
+          <canvas id="captureCanvas" style="display: none;"></canvas>
+
+          <!-- Film sprocket overlays for Film Strip frame style -->
+          <div class="sprockets-left" aria-hidden="true">
+            <div class="sprocket-hole"></div>
+            <div class="sprocket-hole"></div>
+            <div class="sprocket-hole"></div>
+            <div class="sprocket-hole"></div>
+            <div class="sprocket-hole"></div>
+          </div>
+          <div class="sprockets-right" aria-hidden="true">
+            <div class="sprocket-hole"></div>
+            <div class="sprocket-hole"></div>
+            <div class="sprocket-hole"></div>
+            <div class="sprocket-hole"></div>
+            <div class="sprocket-hole"></div>
+          </div>
+
+          <!-- Washi tape paper corner overlays for Washi Tape frame style -->
+          <div class="washi-tape-graphic top-left washi-overlay" style="display: none;" aria-hidden="true"></div>
+          <div class="washi-tape-graphic top-right washi-overlay" style="display: none;" aria-hidden="true"></div>
+          <div class="washi-tape-graphic bottom-left washi-overlay" style="display: none;" aria-hidden="true"></div>
+          <div class="washi-tape-graphic bottom-right washi-overlay" style="display: none;" aria-hidden="true"></div>
+
+          <!-- Fullscreen Countdown overlay on top of video -->
+          <div class="countdown-overlay" id="countdownOverlay" aria-hidden="true">
+            <span class="countdown-number" id="countdownNumber">3</span>
+          </div>
+
+          <!-- Flash overlay -->
+          <div class="flash-overlay" id="flashOverlay" aria-hidden="true"></div>
+
+        </div>
+
+        <div class="booth-decor-bottom"></div>
+
+        <!-- Camera Status indicator -->
+        <div class="status-indicator" id="cameraStatusText">
+          📷 Allow camera access to begin
+        </div>
+
+        <button id="startSessionBtn" class="btn-retro" style="width: 100%; max-width: 320px;" disabled>
+          Start Session 🎞️
+        </button>
+
+        <!-- Or upload a photo divider -->
+        <div class="upload-divider">— or upload photos —</div>
+        
+        <div class="upload-area">
+          <label for="photoUploadInput" class="upload-btn-label">
+            📁 Select Image Files
+          </label>
+          <input type="file" id="photoUploadInput" accept="image/*" multiple>
+        </div>
+
+      </section>
+
+      <!-- ─── RIGHT SIDEBAR: PREVIEW ─── -->
+      <aside class="sidebar-panel shot-counter-panel">
+        <h2>shot preview</h2>
+        
+        <div class="shot-counter-number" id="previewCountText">0 / 4</div>
+        <div class="shot-counter-label">photos taken</div>
+
+        <!-- Mini thumbnails container -->
+        <div class="preview-grid-thumbnails" id="thumbnailsContainer">
+          <div class="preview-thumbnail preview-thumbnail-empty">✦</div>
+          <div class="preview-thumbnail preview-thumbnail-empty">✦</div>
+          <div class="preview-thumbnail preview-thumbnail-empty">✦</div>
+          <div class="preview-thumbnail preview-thumbnail-empty">✦</div>
+        </div>
+
+        <!-- Finish / Next Page Action -->
+        <button id="makeStripBtn" class="btn-retro" style="width: 100%; display: none;">
+          Make my strip →
+        </button>
+      </aside>
+
+    </main>
+
+    <footer class="site-footer">
+      hand-crafted with 🎀 for sweet memories. &copy; 2026
+    </footer>
+  </div>
+
+  <!-- Script dependencies -->
+  <script src="js/audio.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/camera.js"></script>
+</body>
+</html>
